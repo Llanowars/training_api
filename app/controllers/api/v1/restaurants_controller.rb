@@ -6,6 +6,16 @@ class Api::V1::RestaurantsController < Api::V1::BaseController
     @restaurants = policy_scope(Restaurant)
   end
 
+  def create
+    @restaurant = Restaurant.create(restaurant_params)
+    authorize @restaurant
+    if @restaurant.save
+      render :show
+    else
+      render_error
+    end
+  end
+
   def update
     if @restaurant.update(restaurant_params)
       render :show
